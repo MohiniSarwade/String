@@ -1,0 +1,48 @@
+/*string S and P as inputs and returns the smallest window in string S having all the characters of the string P.
+In case there are multiple such windows of same length, return the one with the least starting index. Return "-1" in case there's no such window present.*/ 
+
+
+string smallestWindow (string S, string P){
+    // Your code here
+    int n=S.length();
+    int m=P.length();
+     
+    if(n<m)
+        return "-1";
+   int count_p[256]={0};
+    for(int i=0;i<m;i++)
+        count_p[P[i]]++;
+    
+    int count_s[256]={0};
+    int start=0,si=-1;
+    int ans=INT_MAX;
+    int count=0;
+    for(int i=0;i<n;i++)
+    {
+        count_s[S[i]]++;
+        
+        if(count_p[S[i]]!=0 && count_s[S[i]]<=count_p[S[i]])
+            count++;
+        
+        if(count==m)
+        {
+            while(count_s[S[start]]>count_p[S[start]]||count_p[S[start]]==0)
+            {
+                if(count_s[S[start]]>count_p[S[start]])
+                    count_s[S[start]]--;
+                    
+                start++;
+            }
+            int wlen=i-start+1;
+            if(wlen<ans)
+            {
+                ans=wlen;
+                si=start;
+            }
+        }
+    }
+    if(si==-1)
+        return "-1";
+    return S.substr(si,ans);
+    
+}
